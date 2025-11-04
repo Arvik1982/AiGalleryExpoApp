@@ -35,6 +35,125 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
+## linter prettier install
+
+### Настройка ESLint:
+
+Установите ESLint как dev-зависимость:
+
+npm install eslint --save-dev.
+
+Инициализируйте конфигурацию:
+
+eslint --init
+
+Выберите подходящий стиль, либо создайте файл .eslintrc.json.
+
+### Настройка Prettier:
+
+Установите Prettier: npm install --save-dev --save-exact prettier.
+
+Создать файл .prettierrc.json для конфигурации форматирования (например, ширина табуляции, переносы строк).
+
+{
+"trailingComma": "es5",
+"tabWidth": 2,
+"semi": false,
+"singleQuote": true,
+"jsxSingleQuote": true,
+"bracketSpacing": true,
+"arrowParens": "always",
+"printWidth": 80,
+"endOfLine": "auto"
+}
+
+Объяснение параметров:
+
+trailingComma: "es5" — добавлять висящие запятые там, где это допустимо по стандарту ES5.
+
+tabWidth: 2 — ширина таба в пробелах.
+
+semi: false — не ставить точку с запятой в конце строк.
+
+singleQuote: true — использовать одинарные кавычки.
+
+jsxSingleQuote: true — также использовать одинарные кавычки в JSX.
+
+bracketSpacing: true — ставить пробелы внутри фигурных скобок.
+
+arrowParens: "always" — всегда ставить скобки у стрелочных функций с одним аргументом.
+
+printWidth: 80 — максимальная длина строки.
+
+endOfLine: "auto" — переносы строк определяются автоматически в зависимости от ОС.
+
+### Отключить правила ESLint, конфликтующие с Prettier:
+
+Для этого установите eslint-config-prettier и добавьте "prettier" в extends ESLint конфиг.
+
+npm install --save-dev eslint-config-prettier
+
+Добавить в файл .eslintrc.json или eslint.config.js или eslint.config.mts в раздел extends строку "prettier" в самый конец массива:
+
+"extends": [
+"eslint:recommended",
+"plugin:react/recommended",
+"prettier"
+]
+
+или
+
+в новой Flat конфигурации ESLint:
+
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+
+module.exports = defineConfig([
+...
+eslintPluginPrettierRecommended,
+]);
+
+Это отключит все правила ESLint, которые могут конфликтовать с Prettier, и позволит использовать Prettier как основной форматировщик.
+
+### Для удобства можно использовать eslint-plugin-prettier:
+
+В новой Flat конфигурации ESLint - этого делать уже не нужно
+
+Интегрирует Prettier правила в ESLint.
+
+npm install --save-dev eslint-plugin-prettier
+
+Добавьте в .eslintrc.json в раздел plugins:
+
+"plugins": ["prettier"]
+
+Если вы уже установили и настроили eslint-config-prettier, то установка eslint-plugin-prettier даст дополнительное удобство:
+
+Prettier интегрируется в процесс линтинга, и ошибки форматирования будут видны вместе с другими ошибками ESLint.
+
+Можно запускать исправление форматирования с помощью команды eslint с флагом --fix.
+
+Это объединяет проверку и форматирование в одном инструменте.
+
+### Настройте скрипты в package.json,
+
+"lint": "eslint .",
+
+"lint:fix": "eslint . --fix",
+
+"format": "prettier --write ."
+
+### Husky и lint-staged:
+
+Автоматизируйте запуск линтера и форматтера перед коммитом с помощью Husky и lint-staged, чтобы проверить и поправить код автоматически.
+
+Дополнительно:
+
+### В редакторе кода (VS Code) установите расширения ESLint и Prettier
+
+Для автоматического подсвечивания ошибок и форматирования.
+
+### Настройте автоформатирование при сохранении файла в VS Code.
+
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
