@@ -2,7 +2,7 @@
 
 Это будет приложение, в котором пользователи создают, делятся и взаимодействуют с дополненной реальностью (AR) — виртуальными объектами и фильтрами, наложенными на реальный мир, а также общаются через умного чат-бота.
 
-Функции для реализации:
+## Функции для реализации
 
 - AR-отображение с использованием камеры телефона (Expo AR, ViroReact)
 
@@ -16,12 +16,18 @@
 
 - Голосовое управление/команды для взаимодействия с приложением (эксперимент)
 
+## Стек
+
+- AR: react-viro: https://www.npmjs.com/package/@reactvision/react-viro
+- Database: google Firebase
+
 ## Backend:
 
-- AR-приложения и чат-бота Firebase Authentication для пользователей
-- Cloud Storage для AR-активов
-- Cloud Firestore для данных
-- Cloud Functions для логики чат-бота и обработки AR-контента.
+- google Firebase
+  -- Firebase Authentication
+  -- Cloud Storage для AR-активов
+  -- Cloud Firestore для данных
+  -- Cloud Functions для логики чат-бота и обработки AR-контента.
 
 ## Get started
 
