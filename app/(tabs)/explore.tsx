@@ -1,5 +1,5 @@
 import { Image } from 'expo-image'
-import { Button, Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 
 import { ExternalLink } from '@/components/external-link'
 import ParallaxScrollView from '@/components/parallax-scroll-view'
@@ -8,7 +8,6 @@ import { ThemedView } from '@/components/themed-view'
 import { Collapsible } from '@/components/ui/collapsible'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { Fonts } from '@/constants/theme'
-import { loginUser, registerUser } from '../../firebase/authFirebase'
 
 export default function TabTwoScreen() {
   return (
@@ -24,18 +23,6 @@ export default function TabTwoScreen() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <Button
-          title='BUTTON-reg'
-          onPress={() => {
-            registerUser()
-          }}
-        ></Button>
-        <Button
-          title='BUTTON-login'
-          onPress={() => {
-            loginUser()
-          }}
-        ></Button>
         <ThemedText
           type='title'
           style={{
