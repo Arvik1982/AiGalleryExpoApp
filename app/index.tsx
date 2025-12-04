@@ -10,7 +10,7 @@ const MyButton = ({
   onPressFunc,
   title,
 }: {
-  onPressFunc: () => Promise<string>
+  onPressFunc: () => Promise<void>
   title: string
 }) => {
   const handlePress = () => {
@@ -80,12 +80,12 @@ export default function Login() {
         {!isLoginForm ? (
           <MyButton
             title='Register'
-            onPressFunc={() => registerUser(email, password)}
+            onPressFunc={() => registerUser({ email, password })}
           />
         ) : (
           <MyButton
             title='Login'
-            onPressFunc={() => loginUser(email, password)}
+            onPressFunc={() => loginUser({ email, password })}
           />
         )}
         <Pressable
