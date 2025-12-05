@@ -20,6 +20,8 @@
 
 - AR: react-viro: https://www.npmjs.com/package/@reactvision/react-viro
 - Database: google Firebase
+- react-native-paper
+- react-native-vector-icons/material-icons
 
 ## Backend:
 

@@ -1,3 +1,3 @@
-export default function CreateArScreen() {
+export default function CreateARScreen() {
   return <></>
 }

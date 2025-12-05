@@ -1,10 +1,23 @@
 import { Button, StyleSheet } from 'react-native'
 
+import { ThemedView } from '@/components/themed-view'
 import { logoutUser } from '@/firebase/authFirebase'
+import { router } from 'expo-router'
+import { Settings } from 'lucide-react-native'
 
-export default function HomeScreen() {
+export default function HomeFeedScreen() {
   return (
-    <Button title='EXIT' onPress={logoutUser}></Button>
+    <ThemedView style={{ flex: 1 }}>
+      <Settings
+        onPress={() => {
+          router.navigate('/(tabs)/Profile')
+        }}
+        size={28}
+        color={'red'}
+      />
+      <Button title='EXIT' onPress={logoutUser}></Button>
+    </ThemedView>
+
     // <ParallaxScrollView
     //   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
     //   headerImage={

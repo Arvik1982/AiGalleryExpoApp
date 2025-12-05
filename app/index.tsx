@@ -1,9 +1,7 @@
 import { ThemedText } from '@/components/themed-text'
 import { ThemedView } from '@/components/themed-view'
-import { auth, loginUser, registerUser } from '@/firebase/authFirebase'
-import { router } from 'expo-router'
-import { onAuthStateChanged } from 'firebase/auth'
-import { useEffect, useState } from 'react'
+import { loginUser, registerUser } from '@/firebase/authFirebase'
+import { useState } from 'react'
 import { Button, Pressable, TextInput } from 'react-native'
 
 const MyButton = ({
@@ -39,14 +37,14 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.navigate('/(tabs)/home')
-      }
-    })
-    return unsubscribe
-  }, [])
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       router.navigate('/(tabs)/HomeFeed')
+  //     }
+  //   })
+  //   return unsubscribe
+  // }, [])
 
   return (
     <ThemedView style={{ flex: 1, justifyContent: 'center', gap: 8 }}>

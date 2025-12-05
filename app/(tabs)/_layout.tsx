@@ -1,38 +1,69 @@
+import { useCustomTheme } from '@/context/CustomThemeContext'
 import { Tabs } from 'expo-router'
+import { Home, MessageSquare, PlusSquare, Settings } from 'lucide-react-native'
 import React from 'react'
-
-import { HapticTab } from '@/components/haptic-tab'
-import { IconSymbol } from '@/components/ui/icon-symbol'
-import { Colors } from '@/constants/theme'
-import { useColorScheme } from '@/hooks/use-color-scheme'
+import { Text, View } from 'react-native'
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
+  const { themeObject } = useCustomTheme()
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
+        header: ({ options, route }) => (
+          <View
+            style={{
+              height: 60,
+              backgroundColor: 'red',
+              justifyContent: 'center',
+              paddingHorizontal: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: '600',
+                color: 'white',
+                includeFontPadding: false,
+              }}
+            >
+              {options.title ?? route.name}
+            </Text>
+          </View>
+        ),
       }}
     >
       <Tabs.Screen
-        name='home'
+        name='HomeFeed'
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name='house.fill' color={color} />
-          ),
+          headerShown: false,
+          title: '',
+          tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name='settings'
+        name='Profile'
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name='paperplane.fill' color={color} />
-          ),
+          headerShown: true,
+          title: 'Profile',
+          href: null,
+          tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name='CreateAR'
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <PlusSquare size={30} color={color} />,
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name='ChatBot'
+        options={{
+          title: 'CHB',
+          tabBarIcon: ({ color }) => <MessageSquare size={28} color={color} />,
+          headerShown: true,
         }}
       />
     </Tabs>
