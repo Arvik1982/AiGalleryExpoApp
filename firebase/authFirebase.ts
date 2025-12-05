@@ -11,6 +11,7 @@ import app from '../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
 import { updateEmail, updatePassword, updateProfile, User } from 'firebase/auth'
+import { saveUserData } from './api'
 import { TCredentials } from './types'
 
 export const auth = initializeAuth(app, {
@@ -30,18 +31,32 @@ export const user = onAuthStateChanged(auth, (user) => {
 })
 
 export const registerUser = ({ email, password }: TCredentials) => {
-  return createUserWithEmailAndPassword(auth, email, password).then(
-    (userCredential) => {
-      return userCredential.user
-        .getIdToken()
-        .then((data) => {
-          console.log({ 'LOGIN-DATA': data })
-        })
-        .catch((er) => {
-          console.error(er.message)
-        })
-    }
-  )
+  return createUserWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      const user = userCredential.user
+      const idTokenResult = await user.getIdTokenResult()
+
+      // Сохраняем профиль пользователя в Realtime Database
+      await saveUserData(user.uid, {
+        email: user.email,
+        displayName: user.displayName || '',
+        photoURL: user.photoURL || '',
+        emailVerified: user.emailVerified,
+        createdAt: new Date().toISOString(),
+        lastSignIn: user.metadata.lastSignInTime,
+        idToken: idTokenResult.token, // если нужен токен в БД
+      })
+
+      console.log({
+        'REGISTER-USER': user.uid,
+        'ID-TOKEN': idTokenResult.token,
+      })
+      return user // возвращаем пользователя для дальнейшего использования
+    })
+    .catch((error) => {
+      console.error('Registration error:', error.message)
+      throw error // пробрасываем ошибку дальше
+    })
 }
 
 export const loginUser = ({ email, password }: TCredentials) => {

@@ -1,5 +1,6 @@
 import { ThemedView } from '@/components/themed-view'
 import { addTraining, saveUserData } from '@/firebase/api'
+import { logoutUser } from '@/firebase/authFirebase'
 import { useAuth } from '@/firebase/useAuth'
 import { useState } from 'react'
 import { Button, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
@@ -14,7 +15,6 @@ export default function ProfileScreen() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 10,
-        backgroundColor: 'green',
       }}
     >
       <TextInput
@@ -40,6 +40,13 @@ export default function ProfileScreen() {
             })
           }
         ></Button>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          width: '100%',
+        }}
+      >
+        <Button title='EXIT' onPress={logoutUser}></Button>
       </TouchableOpacity>
     </ThemedView>
     // <ParallaxScrollView

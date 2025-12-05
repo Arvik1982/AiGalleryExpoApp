@@ -7,7 +7,7 @@ import {
   Home,
   MessageSquare,
   PlusSquare,
-  Settings,
+  User,
 } from 'lucide-react-native'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
@@ -31,7 +31,7 @@ export default function TabLayout() {
           <ThemedView
             style={{
               height: 80,
-              justifyContent: 'flex-start',
+              justifyContent: 'space-between',
               paddingHorizontal: 8,
               flexDirection: 'row',
               alignItems: 'center',
@@ -85,12 +85,12 @@ export default function TabLayout() {
                   router.navigate('/(tabs)/Profile')
                 }}
               >
-                <Settings size={28} color={props.tintColor ?? 'white'} />
+                <User size={28} color={props.tintColor ?? 'white'} />
               </TouchableOpacity>
             )
           },
           headerShown: true,
-          title: 'Home',
+          title: '',
           tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
@@ -105,7 +105,19 @@ export default function TabLayout() {
           headerShown: true,
           title: 'Profile',
           href: null,
-          tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
+          tabBarIcon: ({ color }) => <User size={28} color={color} />,
+          headerRight: (props: HeaderBackButtonProps) => {
+            return (
+              <TouchableOpacity
+                style={{
+                  width: '100%',
+                }}
+                onPress={() => {}}
+              >
+                <User size={28} color={props.tintColor ?? 'white'} />
+              </TouchableOpacity>
+            )
+          },
         }}
       />
       <Tabs.Screen

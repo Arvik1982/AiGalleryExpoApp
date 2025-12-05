@@ -1,8 +1,7 @@
-import { Button, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import { ThemedView } from '@/components/themed-view'
 import { useCustomTheme } from '@/context/CustomThemeContext'
-import { logoutUser } from '@/firebase/authFirebase'
 
 export default function HomeFeedScreen() {
   const { themeObject } = useCustomTheme()
@@ -14,15 +13,7 @@ export default function HomeFeedScreen() {
         justifyContent: 'center',
         gap: 10,
       }}
-    >
-      <TouchableOpacity
-        style={{
-          width: '100%',
-        }}
-      >
-        <Button title='EXIT' onPress={logoutUser}></Button>
-      </TouchableOpacity>
-    </ThemedView>
+    ></ThemedView>
 
     // <ParallaxScrollView
     //   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
