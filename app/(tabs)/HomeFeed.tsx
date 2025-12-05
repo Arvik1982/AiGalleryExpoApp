@@ -1,21 +1,27 @@
-import { Button, StyleSheet } from 'react-native'
+import { Button, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { ThemedView } from '@/components/themed-view'
+import { useCustomTheme } from '@/context/CustomThemeContext'
 import { logoutUser } from '@/firebase/authFirebase'
-import { router } from 'expo-router'
-import { Settings } from 'lucide-react-native'
 
 export default function HomeFeedScreen() {
+  const { themeObject } = useCustomTheme()
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <Settings
-        onPress={() => {
-          router.navigate('/(tabs)/Profile')
+    <ThemedView
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          width: '100%',
         }}
-        size={28}
-        color={'red'}
-      />
-      <Button title='EXIT' onPress={logoutUser}></Button>
+      >
+        <Button title='EXIT' onPress={logoutUser}></Button>
+      </TouchableOpacity>
     </ThemedView>
 
     // <ParallaxScrollView

@@ -1,8 +1,16 @@
+import { ThemedView } from '@/components/themed-view'
 import { useCustomTheme } from '@/context/CustomThemeContext'
-import { Tabs } from 'expo-router'
-import { Home, MessageSquare, PlusSquare, Settings } from 'lucide-react-native'
+import { HeaderBackButtonProps } from '@react-navigation/elements'
+import { router, Tabs } from 'expo-router'
+import {
+  ChevronLeft,
+  Home,
+  MessageSquare,
+  PlusSquare,
+  Settings,
+} from 'lucide-react-native'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 export default function TabLayout() {
   const { themeObject } = useCustomTheme()
@@ -10,15 +18,36 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarActiveTintColor: themeObject?.colors.tabIconSelected,
+        tabBarInactiveTintColor: themeObject?.colors.tabIconDefault,
+        tabBarStyle: {
+          height: 60,
+          paddingTop: 10,
+          paddingBottom: 0,
+          backgroundColor: themeObject?.colors.background,
+        },
+
         header: ({ options, route }) => (
-          <View
+          <ThemedView
             style={{
-              height: 60,
-              backgroundColor: 'red',
-              justifyContent: 'center',
-              paddingHorizontal: 16,
+              height: 80,
+              justifyContent: 'flex-start',
+              paddingHorizontal: 8,
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
+            {
+              <View style={{ width: 50 }}>
+                {options.headerLeft?.({
+                  tintColor: themeObject?.colors.tint,
+                  pressColor: 'transparent',
+                  pressOpacity: 0.7,
+                  canGoBack: true,
+                })}
+              </View>
+            }
+
             <Text
               style={{
                 fontSize: 18,
@@ -29,21 +58,50 @@ export default function TabLayout() {
             >
               {options.title ?? route.name}
             </Text>
-          </View>
+            {
+              <View style={{ width: 50 }}>
+                {options.headerRight?.({
+                  tintColor: themeObject?.colors.tint,
+                  pressColor: 'transparent',
+                  pressOpacity: 0.7,
+                  canGoBack: false,
+                })}
+              </View>
+            }
+          </ThemedView>
         ),
       }}
     >
       <Tabs.Screen
         name='HomeFeed'
         options={{
-          headerShown: false,
-          title: '',
+          headerRight: (props: HeaderBackButtonProps) => {
+            return (
+              <TouchableOpacity
+                style={{
+                  width: '100%',
+                }}
+                onPress={() => {
+                  router.navigate('/(tabs)/Profile')
+                }}
+              >
+                <Settings size={28} color={props.tintColor ?? 'white'} />
+              </TouchableOpacity>
+            )
+          },
+          headerShown: true,
+          title: 'Home',
           tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name='Profile'
         options={{
+          headerLeft: (props: HeaderBackButtonProps) => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <ChevronLeft size={30} color={props.tintColor ?? 'white'} />
+            </TouchableOpacity>
+          ),
           headerShown: true,
           title: 'Profile',
           href: null,
@@ -61,7 +119,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name='ChatBot'
         options={{
-          title: 'CHB',
+          title: '',
           tabBarIcon: ({ color }) => <MessageSquare size={28} color={color} />,
           headerShown: true,
         }}
