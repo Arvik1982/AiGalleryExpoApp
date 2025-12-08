@@ -1,16 +1,13 @@
-import { ThemedView } from '@/components/themed-view'
 import { useCustomTheme } from '@/context/CustomThemeContext'
-import { HeaderBackButtonProps } from '@react-navigation/elements'
-import { router, Tabs } from 'expo-router'
+import { Tabs } from 'expo-router'
 import {
-  ChevronLeft,
+  BellIcon,
   Home,
   MessageSquare,
   PlusSquare,
   User,
 } from 'lucide-react-native'
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
 
 export default function TabLayout() {
   const { themeObject } = useCustomTheme()
@@ -18,6 +15,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: themeObject?.colors.tabIconSelected,
         tabBarInactiveTintColor: themeObject?.colors.tabIconDefault,
         tabBarStyle: {
@@ -26,98 +24,20 @@ export default function TabLayout() {
           paddingBottom: 0,
           backgroundColor: themeObject?.colors.background,
         },
-
-        header: ({ options, route }) => (
-          <ThemedView
-            style={{
-              height: 80,
-              justifyContent: 'space-between',
-              paddingHorizontal: 8,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {
-              <View style={{ width: 50 }}>
-                {options.headerLeft?.({
-                  tintColor: themeObject?.colors.tint,
-                  pressColor: 'transparent',
-                  pressOpacity: 0.7,
-                  canGoBack: true,
-                })}
-              </View>
-            }
-
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: '600',
-                color: 'white',
-                includeFontPadding: false,
-              }}
-            >
-              {options.title ?? route.name}
-            </Text>
-            {
-              <View style={{ width: 50 }}>
-                {options.headerRight?.({
-                  tintColor: themeObject?.colors.tint,
-                  pressColor: 'transparent',
-                  pressOpacity: 0.7,
-                  canGoBack: false,
-                })}
-              </View>
-            }
-          </ThemedView>
-        ),
       }}
     >
       <Tabs.Screen
         name='HomeFeed'
         options={{
-          headerRight: (props: HeaderBackButtonProps) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                }}
-                onPress={() => {
-                  router.navigate('/(tabs)/Profile')
-                }}
-              >
-                <User size={28} color={props.tintColor ?? 'white'} />
-              </TouchableOpacity>
-            )
-          },
-          headerShown: true,
           title: '',
           tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name='Profile'
+        name='Notifications'
         options={{
-          headerLeft: (props: HeaderBackButtonProps) => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <ChevronLeft size={30} color={props.tintColor ?? 'white'} />
-            </TouchableOpacity>
-          ),
-          headerShown: true,
-          title: 'Profile',
-          href: null,
-          tabBarIcon: ({ color }) => <User size={28} color={color} />,
-          headerRight: (props: HeaderBackButtonProps) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                }}
-                onPress={() => {}}
-              >
-                <User size={28} color={props.tintColor ?? 'white'} />
-              </TouchableOpacity>
-            )
-          },
+          title: '',
+          tabBarIcon: ({ color }) => <BellIcon size={30} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -125,7 +45,6 @@ export default function TabLayout() {
         options={{
           title: '',
           tabBarIcon: ({ color }) => <PlusSquare size={30} color={color} />,
-          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -133,7 +52,13 @@ export default function TabLayout() {
         options={{
           title: '',
           tabBarIcon: ({ color }) => <MessageSquare size={28} color={color} />,
-          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name='Profile'
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <User size={28} color={color} />,
         }}
       />
     </Tabs>

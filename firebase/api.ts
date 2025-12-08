@@ -1,4 +1,14 @@
 import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+  User,
+} from 'firebase/auth'
+
+import { router } from 'expo-router'
+import {
   get,
   onValue,
   orderByChild,
@@ -8,7 +18,9 @@ import {
   set,
   update,
 } from 'firebase/database'
+import { auth } from './authFirebase'
 import { database } from './database'
+import { TCredentials } from './types'
 
 // | Метод                    | Действие              | Перезапись всего объекта? |
 // | ------------------------ | --------------------- | ------------------------- |
@@ -16,7 +28,80 @@ import { database } from './database'
 // | update(updates)          | Только указанные поля | ❌ Нет                     |
 // | set(data, {merge: true}) | Слияние               | ❌ Нет                     |
 
-// Сохранить/обновить данные пользователя в БД
+export const registerUser = ({ email, password }: TCredentials) => {
+  return createUserWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      const user = userCredential.user
+      const idTokenResult = await user.getIdTokenResult()
+
+      // Сохраняем профиль пользователя в Realtime Database
+      await saveUserData(user.uid, {
+        email: user.email,
+        displayName: user.displayName || '',
+        photoURL: user.photoURL || '',
+        emailVerified: user.emailVerified,
+        createdAt: new Date().toISOString(),
+        lastSignIn: user.metadata.lastSignInTime,
+        idToken: idTokenResult.token, // если нужен токен в БД
+      })
+
+      console.log({
+        'REGISTER-USER': user.uid,
+        'ID-TOKEN': idTokenResult.token,
+      })
+      return user // возвращаем пользователя для дальнейшего использования
+    })
+    .catch((error) => {
+      console.error('Registration error:', error.message)
+      throw error // пробрасываем ошибку дальше
+    })
+}
+
+export const loginUser = ({ email, password }: TCredentials) => {
+  return signInWithEmailAndPassword(auth, email, password).then(
+    (userCredential) => {
+      userCredential.user
+        .getIdToken()
+        .then((data) => {
+          console.log({ 'LOGIN-DATA': data })
+        })
+        .catch((er) => {
+          console.error(er.message)
+        })
+    }
+  )
+}
+
+// Выход из системы
+export const logoutUser = async () => {
+  try {
+    await auth.signOut()
+    router.replace('/')
+  } catch (error) {
+    console.error('Logout error:', error)
+    throw error
+  }
+}
+// Обновить профиль (displayName, photoURL)
+export const updateUserProfile = async (
+  user: User,
+  displayName?: string,
+  photoURL?: string
+) => {
+  await updateProfile(user, { displayName, photoURL })
+}
+
+// Обновить email
+export const updateUserEmail = async (user: User, newEmail: string) => {
+  await updateEmail(user, newEmail)
+}
+
+// Обновить пароль
+export const updateUserPassword = async (user: User, newPassword: string) => {
+  await updatePassword(user, newPassword)
+}
+
+// Сохранить/заменить данные пользователя в БД
 export const saveUserData = async (uid: string, data: any) => {
   await set(ref(database, `users/${uid}`), data)
 }

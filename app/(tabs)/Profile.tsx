@@ -1,34 +1,128 @@
-import { ThemedView } from '@/components/themed-view'
-import { addTraining, saveUserData } from '@/firebase/api'
-import { logoutUser } from '@/firebase/authFirebase'
+import ParallaxScrollView from '@/components/parallax-scroll-view'
+import {
+  addTraining,
+  getUserData,
+  logoutUser,
+  saveUserData,
+} from '@/firebase/api'
+
 import { useAuth } from '@/firebase/useAuth'
-import { useState } from 'react'
-import { Button, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { useEffect, useState } from 'react'
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
 export default function ProfileScreen() {
   const { user } = useAuth()
+  const [userDataState, setUserDataState] = useState({})
+
+  const userData = async (uid: string | undefined) => {
+    if (uid === undefined) return
+    const res = await getUserData(uid)
+    setUserDataState(res)
+  }
+  useEffect(() => {
+    userData(user?.uid)
+    console.log({ userDataState })
+  }, [user?.uid])
+
   const [val, setVal] = useState('')
+
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 10,
-      }}
+    <ParallaxScrollView
+      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerImage={
+        <>
+          <Image
+            source={{ uri: user?.photoURL }}
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 60,
+              alignSelf: 'center',
+              backgroundColor: 'red',
+              marginTop: 20, // Добавьте отступ сверху
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              marginVertical: 10,
+            }}
+          >
+            {user?.displayName || 'Без имени'}
+          </Text>
+        </>
+      }
     >
+      {/* Весь контент должен быть внутри ThemedView или View */}
+
+      <Text
+        style={{
+          width: '100%',
+          height: 50,
+          backgroundColor: 'grey',
+          paddingHorizontal: 10,
+          marginBottom: 10,
+        }}
+      >
+        📧 {user?.email || 'Не указан'}
+      </Text>
+      <Text
+        style={{
+          width: '100%',
+          height: 50,
+          backgroundColor: 'grey',
+          paddingHorizontal: 10,
+          marginBottom: 10,
+        }}
+      >
+        📱 {user?.phoneNumber || 'Не указан'}
+      </Text>
+      <Text
+        style={{
+          width: '100%',
+          height: 50,
+          backgroundColor: 'grey',
+          paddingHorizontal: 10,
+          marginBottom: 10,
+        }}
+      >
+        ID: {user?.uid?.slice(0, 8)}...
+      </Text>
+      <TouchableOpacity>
+        <Text style={{ color: 'blue' }}>Редактировать</Text>
+      </TouchableOpacity>
+
       <TextInput
-        style={{ width: '100%', height: 50, backgroundColor: 'white' }}
+        style={{
+          width: '100%',
+          height: 50,
+          backgroundColor: 'grey',
+          paddingHorizontal: 10,
+          marginBottom: 10,
+        }}
         value={val}
         onChangeText={setVal}
+        placeholder='Введите что-то...'
       />
-      <TouchableOpacity style={{ width: '100%' }}>
+
+      <View style={{ width: '100%', marginBottom: 10 }}>
         <Button
           onPress={() => user && saveUserData(user.uid, { val })}
           title='SEND'
         />
-      </TouchableOpacity>
-      <TouchableOpacity style={{ width: '100%' }}>
+      </View>
+
+      <View style={{ width: '100%', marginBottom: 10 }}>
         <Button
           title='TRAINING'
           onPress={() =>
@@ -39,114 +133,22 @@ export default function ProfileScreen() {
               notes: 'Отличная сессия',
             })
           }
-        ></Button>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-        }}
-      >
-        <Button title='EXIT' onPress={logoutUser}></Button>
-      </TouchableOpacity>
-    </ThemedView>
-    // <ParallaxScrollView
-    //   headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-    //   headerImage={
-    //     <IconSymbol
-    //       size={310}
-    //       color='#808080'
-    //       name='chevron.left.forwardslash.chevron.right'
-    //       style={styles.headerImage}
-    //     />
-    //   }
-    // >
-    //   <ThemedView style={styles.titleContainer}>
-    //     <ThemedText
-    //       type='title'
-    //       style={{
-    //         fontFamily: Fonts.rounded,
-    //       }}
-    //     >
-    //       Explore
-    //     </ThemedText>
-    //   </ThemedView>
-    //   <ThemedText>
-    //     This app includes example code to help you get started.
-    //   </ThemedText>
-    //   <Collapsible title='File-based routing'>
-    //     <ThemedText>
-    //       This app has two screens:{' '}
-    //       <ThemedText type='defaultSemiBold'>app/(tabs)/index.tsx</ThemedText>{' '}
-    //       and{' '}
-    //       <ThemedText type='defaultSemiBold'>app/(tabs)/explore.tsx</ThemedText>
-    //     </ThemedText>
-    //     <ThemedText>
-    //       The layout file in{' '}
-    //       <ThemedText type='defaultSemiBold'>app/(tabs)/_layout.tsx</ThemedText>{' '}
-    //       sets up the tab navigator.
-    //     </ThemedText>
-    //     <ExternalLink href='https://docs.expo.dev/router/introduction'>
-    //       <ThemedText type='link'>Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title='Android, iOS, and web support'>
-    //     <ThemedText>
-    //       You can open this project on Android, iOS, and the web. To open the
-    //       web version, press <ThemedText type='defaultSemiBold'>w</ThemedText>{' '}
-    //       in the terminal running this project.
-    //     </ThemedText>
-    //   </Collapsible>
-    //   <Collapsible title='Images'>
-    //     <ThemedText>
-    //       For static images, you can use the{' '}
-    //       <ThemedText type='defaultSemiBold'>@2x</ThemedText> and{' '}
-    //       <ThemedText type='defaultSemiBold'>@3x</ThemedText> suffixes to
-    //       provide files for different screen densities
-    //     </ThemedText>
-    //     <Image
-    //       source={require('@/assets/images/react-logo.png')}
-    //       style={{ width: 100, height: 100, alignSelf: 'center' }}
-    //     />
-    //     <ExternalLink href='https://reactnative.dev/docs/images'>
-    //       <ThemedText type='link'>Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title='Light and dark mode components'>
-    //     <ThemedText>
-    //       This template has light and dark mode support. The{' '}
-    //       <ThemedText type='defaultSemiBold'>useColorScheme()</ThemedText> hook
-    //       lets you inspect what the user&apos;s current color scheme is, and so
-    //       you can adjust UI colors accordingly.
-    //     </ThemedText>
-    //     <ExternalLink href='https://docs.expo.dev/develop/user-interface/color-themes/'>
-    //       <ThemedText type='link'>Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title='Animations'>
-    //     <ThemedText>
-    //       This template includes an example of an animated component. The{' '}
-    //       <ThemedText type='defaultSemiBold'>
-    //         components/HelloWave.tsx
-    //       </ThemedText>{' '}
-    //       component uses the powerful{' '}
-    //       <ThemedText type='defaultSemiBold' style={{ fontFamily: Fonts.mono }}>
-    //         react-native-reanimated
-    //       </ThemedText>{' '}
-    //       library to create a waving hand animation.
-    //     </ThemedText>
-    //     {Platform.select({
-    //       ios: (
-    //         <ThemedText>
-    //           The{' '}
-    //           <ThemedText type='defaultSemiBold'>
-    //             components/ParallaxScrollView.tsx
-    //           </ThemedText>{' '}
-    //           component provides a parallax effect for the header image.
-    //         </ThemedText>
-    //       ),
-    //     })}
-    //   </Collapsible>
-    // </ParallaxScrollView>
+        />
+      </View>
+
+      <View style={{ width: '100%', marginBottom: 10 }}>
+        <Button title='EXIT' onPress={logoutUser} />
+      </View>
+      <View style={{ width: '100%', marginBottom: 10 }}>
+        <Button title='EXIT' onPress={logoutUser} />
+      </View>
+      <View style={{ width: '100%', marginBottom: 10 }}>
+        <Button title='EXIT' onPress={logoutUser} />
+      </View>
+      <View style={{ width: '100%', marginBottom: 10 }}>
+        <Button title='EXIT' onPress={logoutUser} />
+      </View>
+    </ParallaxScrollView>
   )
 }
 

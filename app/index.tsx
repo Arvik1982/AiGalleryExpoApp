@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/themed-text'
 import { ThemedView } from '@/components/themed-view'
-import { loginUser, registerUser } from '@/firebase/authFirebase'
+import { loginUser, registerUser } from '@/firebase/api'
 import { useState } from 'react'
 import { Button, Pressable, TextInput } from 'react-native'
 
@@ -8,7 +8,7 @@ const MyButton = ({
   onPressFunc,
   title,
 }: {
-  onPressFunc: () => Promise<void>
+  onPressFunc: () => Promise<any>
   title: string
 }) => {
   const handlePress = () => {
