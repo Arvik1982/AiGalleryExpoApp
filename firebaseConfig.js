@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyABcX_WEk7rG0D2_nrndpaCk7glKNWkpbg',
+  apiKey: key,
   authDomain: 'ai-app-expo.firebaseapp.com',
   databaseURL: 'https://ai-app-expo-default-rtdb.firebaseio.com',
   projectId: 'ai-app-expo',
