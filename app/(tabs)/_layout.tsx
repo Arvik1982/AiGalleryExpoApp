@@ -1,35 +1,66 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useCustomTheme } from '@/context/CustomThemeContext'
+import { Tabs } from 'expo-router'
+import {
+  BellIcon,
+  Home,
+  MessageSquare,
+  PlusSquare,
+  User,
+} from 'lucide-react-native'
+import React from 'react'
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { themeObject } = useCustomTheme()
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        tabBarActiveTintColor: themeObject?.colors.tabIconSelected,
+        tabBarInactiveTintColor: themeObject?.colors.tabIconDefault,
+        tabBarStyle: {
+          height: 60,
+          paddingTop: 10,
+          paddingBottom: 0,
+          backgroundColor: themeObject?.colors.background,
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name='HomeFeed'
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '',
+          tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name='Notifications'
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '',
+          tabBarIcon: ({ color }) => <BellIcon size={30} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name='CreateAR'
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <PlusSquare size={30} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name='ChatBot'
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <MessageSquare size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name='Profile'
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <User size={28} color={color} />,
         }}
       />
     </Tabs>
-  );
+  )
 }
