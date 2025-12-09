@@ -35,3 +35,4 @@
 - Добавь свои Firebase ключи из console.firebase.google.com
 - npx expo start
 
+

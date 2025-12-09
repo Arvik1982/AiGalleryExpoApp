@@ -1,24 +1,49 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { router, Stack } from 'expo-router'
+import 'react-native-reanimated'
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useAuth } from '@/firebase/useAuth'
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import {
+  CustomThemeProvider,
+  useCustomTheme,
+} from '@/context/CustomThemeContext'
+import { ThemeProvider } from '@react-navigation/native'
+import { useEffect } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+const App = () => {
+  const { themeObject } = useCustomTheme()
+  const { user, loading } = useAuth()
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        console.log(user)
+        router.replace('/(tabs)/HomeFeed') // Авторизован → tabs
+      } else {
+        router.replace('/') // Не авторизован → index
+      }
+    }
+  }, [user, loading])
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider value={themeObject}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: themeObject?.colors.background }}
+      >
+        <Stack>
+          <Stack.Screen name='index' options={{ headerShown: false }} />
+          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+        </Stack>
+      </SafeAreaView>
     </ThemeProvider>
-  );
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <CustomThemeProvider>
+      <App />
+    </CustomThemeProvider>
+  )
 }
