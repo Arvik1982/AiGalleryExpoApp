@@ -31,9 +31,7 @@
 - cd AiGalleryExpoApp
 - pnpm install
 ### **2. Firebase config**
-cp .env.example .env
-Добавь свои Firebase ключи из console.firebase.google.com
+- cp .env.example .env
+- Добавь свои Firebase ключи из console.firebase.google.com
+- npx expo start
 
-### **3. Development build (обязательно!)**
-eas build --profile development --platform android
-npx expo start --dev-client
