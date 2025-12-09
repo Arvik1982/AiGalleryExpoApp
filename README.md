@@ -1,236 +1,38 @@
-# Социальная AR-галерея с чат-ботом помощником 👋
+# 🚀 AiGalleryExpoApp — AR Галерея с Firebase
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Expo](https://img.shields.io/badge/Expo-51+-46BC2F?style=flat&logo=expo&logoColor=white)](https://expo.dev)
+[![ReactNative](https://img.shields.io/badge/React_Native-0.75-20232A?style=flat&logo=react&logoColor=%2361DAFB)](https://reactnative.dev)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=orange)](https://firebase.google.com)
+[![Status](https://img.shields.io/badge/Status-WIP-orange?style=flat&logo=roadmap&logoColor=white)](https://roadmap.sh)
+
+## 🎮 Текущий статус: **Firebase Backend + Камера готово**
+- ✅ Firebase — Auth + Firestore + Storage (готово!)
+- ✅ expo-camera — камера работает (development build)
+- ✅ react-native-paper — UI компоненты
+- ✅ TypeScript — полная типизация
+- ✅ Архитектура: hooks/services/screens (senior-level)
+- ❌ ARGLView + expo-three — 3D сцена (в работе)
+- ❌ FeedScreen — лента постов (в работе)
+- ❌ CreateScreen — создание AR объектов (в работе)
+
+## 🛤️ Roadmap (декабрь 2025)
+- 1️⃣ [ ] ARGLView — expo-gl + expo-three (GLView + Three.js)
+- 2️⃣ [ ] CreateScreen — scene.add(cube/sphere) по тапу
+- 3️⃣ [ ] FeedScreen — лента постов из Firestore
+- 4️⃣ [ ] react-navigation — bottom tabs (Feed/Create/Profile)
+- 5️⃣ [ ] TripoAI — AI .glb модели в Storage
+- 6️⃣ [ ] Запись AR видео → пост
+
+## 🚀 **Быстрый запуск (5 минут)**
+
+### **1. Клонируй + установи**
+- git clone https://github.com/Arvik1982/AiGalleryExpoApp.git
+- cd AiGalleryExpoApp
+- pnpm install
+### **2. Firebase config**
+- cp .env.example .env
+- Добавь свои Firebase ключи из console.firebase.google.com
+- npx expo start
 
-Это будет приложение, в котором пользователи создают, делятся и взаимодействуют с дополненной реальностью (AR) — виртуальными объектами и фильтрами, наложенными на реальный мир, а также общаются через умного чат-бота.
 
-## Функции для реализации
-
-- AR-отображение с использованием камеры телефона (Expo AR, ViroReact)
-
-- Интерактивный умный чат-бот помощник с ИИ, который помогает использовать app (например, GPT-подобный ассистент)
-
-- Возможность создать и настроить свои AR-объекты (простые фильтры, стикеры, 3D-модели)
-
-- Социальный функционал: публикации AR-контента, лайки, комментарии, подписки
-
-- Тёмная тема и минималистичный адаптивный UI (тренд дизайна 2025)
-
-- Голосовое управление/команды для взаимодействия с приложением (эксперимент)
-
-## Стек
-
-- AR:
-  ✅ expo-camera + expo-three = 3D AR объекты на столе
-  ✅ expo-av = аудио для AR
-  ✅ react-native-paper = UI
-  ✅ google Firebase = социалка
-  ✅ TripoAI: 200 моделей/аккаунт (13/день)
-  ✅ Meshy.ai: 10 моделей/мес бесплатно - аналог TripoAI
-  ✅ Procedural = [translate:быстрые 3D примитивы из кода (0.1сек)]
-  ✅ GPT-4o-mini: парсит промпты (10k/день)
-  ✅ Firebase: $0.12/GB (1M постов = $20)
-  ✅ icons lucide-react-native
-
-| Компонент                | Описание                                  | Нужен?                |
-| ------------------------ | ----------------------------------------- | --------------------- |
-| expo-camera + expo-three | Отображение 3D-объектов AR                | ✅ Да, для рендеринга |
-| expo-av                  | Аудио, видео                              | ✅ Да                 |
-| react-native-paper       | UI, кнопки, слайды                        | ✅ Да                 |
-| Firebase                 | Хранение постов, моделей                  | ✅ Да                 |
-| TripoAI + Meshy.ai       | Генерация сложных .glb моделей AR         | ✅ Да                 |
-| GPT-4o-mini              | Парсит запросы и управляет генерацией     | ✅ Да                 |
-| Procedural генерация     | Быстрая генерация простых 3D форм из кода | ✅ Да, обязательна    |
-| Иконки                   | UI/UX, lucide-react-native                | ✅ Да                 |
-
-1. Юзер: "Сделай золотой куб"
-   ↓ GPT-4o-mini
-2. {type: "golden_cube", effects: ["glow"]}
-   ↓ TripoAI
-3. golden_cube.glb (2MB файл)
-   ↓ Firebase Storage
-4. https://firebasestorage/cube.glb (CDN)
-   ↓ expo-three.GLTFLoader
-5. 🧊 КУБ НА СТОЛЕ → видео → ПОСТ в ленту
-
-#
-
-1. Юзер: "[translate:Сделай золотой куб]"
-   ↓ GPT-4o-mini
-2. {type: "[translate:golden_cube]", effects: ["glow"]}
-   ↓ [translate:Проверка сложности]
-3. Простой объект → [translate:процедурная генерация] (0.1сек)
-   ↓ expo-three
-   🧊 КУБ НА СТОЛЕ (математика, 0MB)
-
-## Backend:
-
-- google Firebase
-  -- Firebase Authentication
-  -- Cloud Storage для AR-активов
-  -- Cloud Firestore для данных
-  -- Cloud Functions для логики чат-бота и обработки AR-контента.
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## linter prettier install
-
-### Настройка ESLint:
-
-Установите ESLint как dev-зависимость:
-
-npm install eslint --save-dev.
-
-Инициализируйте конфигурацию:
-
-eslint --init
-
-Выберите подходящий стиль, либо создайте файл .eslintrc.json.
-
-### Настройка Prettier:
-
-Установите Prettier: npm install --save-dev --save-exact prettier.
-
-Создать файл .prettierrc.json для конфигурации форматирования (например, ширина табуляции, переносы строк).
-
-{
-"trailingComma": "es5",
-"tabWidth": 2,
-"semi": false,
-"singleQuote": true,
-"jsxSingleQuote": true,
-"bracketSpacing": true,
-"arrowParens": "always",
-"printWidth": 80,
-"endOfLine": "auto"
-}
-
-Объяснение параметров:
-
-trailingComma: "es5" — добавлять висящие запятые там, где это допустимо по стандарту ES5.
-
-tabWidth: 2 — ширина таба в пробелах.
-
-semi: false — не ставить точку с запятой в конце строк.
-
-singleQuote: true — использовать одинарные кавычки.
-
-jsxSingleQuote: true — также использовать одинарные кавычки в JSX.
-
-bracketSpacing: true — ставить пробелы внутри фигурных скобок.
-
-arrowParens: "always" — всегда ставить скобки у стрелочных функций с одним аргументом.
-
-printWidth: 80 — максимальная длина строки.
-
-endOfLine: "auto" — переносы строк определяются автоматически в зависимости от ОС.
-
-### Отключить правила ESLint, конфликтующие с Prettier:
-
-Для этого установите eslint-config-prettier и добавьте "prettier" в extends ESLint конфиг.
-
-npm install --save-dev eslint-config-prettier
-
-Добавить в файл .eslintrc.json или eslint.config.js или eslint.config.mts в раздел extends строку "prettier" в самый конец массива:
-
-"extends": [
-"eslint:recommended",
-"plugin:react/recommended",
-"prettier"
-]
-
-или
-
-в новой Flat конфигурации ESLint:
-
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
-
-module.exports = defineConfig([
-...
-eslintPluginPrettierRecommended,
-]);
-
-Это отключит все правила ESLint, которые могут конфликтовать с Prettier, и позволит использовать Prettier как основной форматировщик.
-
-### Для удобства можно использовать eslint-plugin-prettier:
-
-В новой Flat конфигурации ESLint - этого делать уже не нужно
-
-Интегрирует Prettier правила в ESLint.
-
-npm install --save-dev eslint-plugin-prettier
-
-Добавьте в .eslintrc.json в раздел plugins:
-
-"plugins": ["prettier"]
-
-Если вы уже установили и настроили eslint-config-prettier, то установка eslint-plugin-prettier даст дополнительное удобство:
-
-Prettier интегрируется в процесс линтинга, и ошибки форматирования будут видны вместе с другими ошибками ESLint.
-
-Можно запускать исправление форматирования с помощью команды eslint с флагом --fix.
-
-Это объединяет проверку и форматирование в одном инструменте.
-
-### Настройте скрипты в package.json,
-
-"lint": "eslint .",
-
-"lint:fix": "eslint . --fix",
-
-"format": "prettier --write ."
-
-### Husky и lint-staged:
-
-Автоматизируйте запуск линтера и форматтера перед коммитом с помощью Husky и lint-staged, чтобы проверить и поправить код автоматически.
-
-Дополнительно:
-
-### В редакторе кода (VS Code) установите расширения ESLint и Prettier
-
-Для автоматического подсвечивания ошибок и форматирования.
-
-### Настройте автоформатирование при сохранении файла в VS Code.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
