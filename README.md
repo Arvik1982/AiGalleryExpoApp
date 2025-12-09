@@ -34,3 +34,6 @@
 cp .env.example .env
 Добавь свои Firebase ключи из console.firebase.google.com
 
+### **3. Development build (обязательно!)**
+eas build --profile development --platform android
+npx expo start --dev-client
