@@ -24,4 +24,13 @@
 - 5️⃣ [ ] TripoAI — AI .glb модели в Storage
 - 6️⃣ [ ] Запись AR видео → пост
 
+## 🚀 **Быстрый запуск (5 минут)**
+
+### **1. Клонируй + установи**
+- git clone https://github.com/Arvik1982/AiGalleryExpoApp.git
+- cd AiGalleryExpoApp
+- pnpm install
+### **2. Firebase config**
+cp .env.example .env
+Добавь свои Firebase ключи из console.firebase.google.com
 
