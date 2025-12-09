@@ -7,36 +7,21 @@
 [![Status](https://img.shields.io/badge/Status-WIP-orange?style=flat&logo=roadmap&logoColor=white)](https://roadmap.sh)
 
 ## 🎮 Текущий статус: **Firebase Backend + Камера готово**
-✅ Firebase — Auth + Firestore + Storage (готово!)
-✅ expo-camera — камера работает (development build)
-✅ react-native-paper — UI компоненты
-✅ TypeScript — полная типизация
-✅ Архитектура: hooks/services/screens (senior-level)
-❌ ARGLView + expo-three — 3D сцена (в работе)
-❌ FeedScreen — лента постов (в работе)
-❌ CreateScreen — создание AR объектов (в работе)
+- ✅ Firebase — Auth + Firestore + Storage (готово!)
+- ✅ expo-camera — камера работает (development build)
+- ✅ react-native-paper — UI компоненты
+- ✅ TypeScript — полная типизация
+- ✅ Архитектура: hooks/services/screens (senior-level)
+- ❌ ARGLView + expo-three — 3D сцена (в работе)
+- ❌ FeedScreen — лента постов (в работе)
+- ❌ CreateScreen — создание AR объектов (в работе)
 
 ## 🛤️ Roadmap (декабрь 2025)
-1️⃣ [ ] ARGLView — expo-gl + expo-three (GLView + Three.js)
-2️⃣ [ ] CreateScreen — scene.add(cube/sphere) по тапу
-3️⃣ [ ] FeedScreen — лента постов из Firestore
-4️⃣ [ ] react-navigation — bottom tabs (Feed/Create/Profile)
-5️⃣ [ ] TripoAI — AI .glb модели в Storage
-6️⃣ [ ] Запись AR видео → пост
+- 1️⃣ [ ] ARGLView — expo-gl + expo-three (GLView + Three.js)
+- 2️⃣ [ ] CreateScreen — scene.add(cube/sphere) по тапу
+- 3️⃣ [ ] FeedScreen — лента постов из Firestore
+- 4️⃣ [ ] react-navigation — bottom tabs (Feed/Create/Profile)
+- 5️⃣ [ ] TripoAI — AI .glb модели в Storage
+- 6️⃣ [ ] Запись AR видео → пост
 
 
-## 🚀 Быстрый запуск Backend + Камера (5 мин)
-Клонируй
-git clone https://github.com/Arvik1982/AiGalleryExpoApp.git
-cd AiGalleryExpoApp
-
-Установи
-pnpm install
-
-Firebase config (.env)
-cp .env.example .env
-
-Добавь свои Firebase ключи
-Development build (камера!)
-eas build --profile development --platform android
-npx expo start --dev-client
